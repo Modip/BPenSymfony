@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="{{asset('css/mystyle.css')}}"/>
+    <title>{%block title %} Accueil {%endblock %} </title>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <h3>BANQUE DU <span style="color: white;">PEUPLE</span></h3>
+    </header>
+    <div>
+        <nav class="sidebar">
+            <a class="dash" href="index.html">Dashboard </a>
+            <a class="compt" href="{{path('compte_liste')}} " style="color: black;">Compte</a>
+            <a class="dash" href="{{path('client_liste')}} ">Client</a>
+        </nav>
+    </div>
