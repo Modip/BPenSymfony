@@ -29,9 +29,15 @@ class TypeCompte
      */
     private $comptes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Compteph::class, mappedBy="typecompte")
+     */
+    private $comptephs;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
+        $this->comptephs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,5 +90,36 @@ class TypeCompte
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    /**
+     * @return Collection|Compteph[]
+     */
+    public function getComptephs(): Collection
+    {
+        return $this->comptephs;
+    }
+
+    public function addCompteph(Compteph $compteph): self
+    {
+        if (!$this->comptephs->contains($compteph)) {
+            $this->comptephs[] = $compteph;
+            $compteph->setTypecompte($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompteph(Compteph $compteph): self
+    {
+        if ($this->comptephs->contains($compteph)) {
+            $this->comptephs->removeElement($compteph);
+            // set the owning side to null (unless already changed)
+            if ($compteph->getTypecompte() === $this) {
+                $compteph->setTypecompte(null);
+            }
+        }
+
+        return $this;
     }
 }

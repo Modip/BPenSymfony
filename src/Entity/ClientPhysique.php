@@ -64,9 +64,15 @@ class ClientPhysique
      */
     private $employeur;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Compteph::class, mappedBy="clientphysique")
+     */
+    private $comptephs;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
+        $this->comptephs = new ArrayCollection();
     }
 
 
@@ -206,6 +212,37 @@ class ClientPhysique
     public function __toString()
     {
         return $this->nom.' '.$this->prenom;
+    }
+
+    /**
+     * @return Collection|Compteph[]
+     */
+    public function getComptephs(): Collection
+    {
+        return $this->comptephs;
+    }
+
+    public function addCompteph(Compteph $compteph): self
+    {
+        if (!$this->comptephs->contains($compteph)) {
+            $this->comptephs[] = $compteph;
+            $compteph->setClientphysique($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompteph(Compteph $compteph): self
+    {
+        if ($this->comptephs->contains($compteph)) {
+            $this->comptephs->removeElement($compteph);
+            // set the owning side to null (unless already changed)
+            if ($compteph->getClientphysique() === $this) {
+                $compteph->setClientphysique(null);
+            }
+        }
+
+        return $this;
     }
 
 }

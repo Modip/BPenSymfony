@@ -59,10 +59,16 @@ class ClientMoral
      */
     private $clientPhysiques;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comptemor::class, mappedBy="Client")
+     */
+    private $comptemors;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
         $this->clientPhysiques = new ArrayCollection();
+        $this->comptemors = new ArrayCollection();
     }
 
 
@@ -209,6 +215,37 @@ class ClientMoral
     public function __toString()
     {
         return $this->nom;
+    }
+
+    /**
+     * @return Collection|Comptemor[]
+     */
+    public function getComptemors(): Collection
+    {
+        return $this->comptemors;
+    }
+
+    public function addComptemor(Comptemor $comptemor): self
+    {
+        if (!$this->comptemors->contains($comptemor)) {
+            $this->comptemors[] = $comptemor;
+            $comptemor->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComptemor(Comptemor $comptemor): self
+    {
+        if ($this->comptemors->contains($comptemor)) {
+            $this->comptemors->removeElement($comptemor);
+            // set the owning side to null (unless already changed)
+            if ($comptemor->getClient() === $this) {
+                $comptemor->setClient(null);
+            }
+        }
+
+        return $this;
     }
 
 }

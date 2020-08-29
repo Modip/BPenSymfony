@@ -34,9 +34,21 @@ class Agence
      */
     private $comptes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Compteph::class, mappedBy="agence")
+     */
+    private $comptephs;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comptemor::class, mappedBy="agence")
+     */
+    private $comptemors;
+
     public function __construct()
     {
         $this->comptes = new ArrayCollection();
+        $this->comptephs = new ArrayCollection();
+        $this->comptemors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,5 +113,67 @@ class Agence
     public function __toString()
     {
         return $this->nom;
+    }
+
+    /**
+     * @return Collection|Compteph[]
+     */
+    public function getComptephs(): Collection
+    {
+        return $this->comptephs;
+    }
+
+    public function addCompteph(Compteph $compteph): self
+    {
+        if (!$this->comptephs->contains($compteph)) {
+            $this->comptephs[] = $compteph;
+            $compteph->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompteph(Compteph $compteph): self
+    {
+        if ($this->comptephs->contains($compteph)) {
+            $this->comptephs->removeElement($compteph);
+            // set the owning side to null (unless already changed)
+            if ($compteph->getAgence() === $this) {
+                $compteph->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comptemor[]
+     */
+    public function getComptemors(): Collection
+    {
+        return $this->comptemors;
+    }
+
+    public function addComptemor(Comptemor $comptemor): self
+    {
+        if (!$this->comptemors->contains($comptemor)) {
+            $this->comptemors[] = $comptemor;
+            $comptemor->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComptemor(Comptemor $comptemor): self
+    {
+        if ($this->comptemors->contains($comptemor)) {
+            $this->comptemors->removeElement($comptemor);
+            // set the owning side to null (unless already changed)
+            if ($comptemor->getAgence() === $this) {
+                $comptemor->setAgence(null);
+            }
+        }
+
+        return $this;
     }
 }
